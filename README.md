@@ -4,6 +4,11 @@ A Flutter plugin for liveness detection with randomized challenge response metho
 
 [![pub package](https://img.shields.io/pub/v/flutter_liveness_detection_randomized_plugin.svg)](https://pub.dev/packages/flutter_liveness_detection_randomized_plugin)
 
+## Preview 🪟
+![Slide 16_9 - 1](https://github.com/user-attachments/assets/55e59d51-e0da-4562-879e-ae50adaced33)
+
+https://github.com/user-attachments/assets/f7266dc9-c4a2-4fba-8684-0ead2f678180
+
 ## Features ✨
 
 - 📱 Real-time face detection
