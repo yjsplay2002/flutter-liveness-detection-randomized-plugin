@@ -17,6 +17,7 @@ dependencies:
   google_mlkit_face_detection: ^0.11.0
   image: ^4.0.15
   lottie: ^2.4.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
