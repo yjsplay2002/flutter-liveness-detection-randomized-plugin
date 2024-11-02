@@ -2,8 +2,6 @@ export 'dart:convert';
 export 'dart:io';
 export 'dart:async';
 export 'dart:math';
-// ignore: depend_on_referenced_packages
-export 'package:collection/collection.dart';
 export 'package:camera/camera.dart';
 export 'package:equatable/equatable.dart';
 export 'package:flutter/material.dart';
