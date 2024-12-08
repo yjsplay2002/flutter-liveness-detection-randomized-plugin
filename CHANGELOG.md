@@ -1,3 +1,9 @@
+## 1.0.1 🚀
+
+### Update dependencies 🛠️
+
+- 🛠️ Update camera dependencies and also add camera_android_camerax for better experience while using liveness detection
+
 ## 1.0.0 🚀
 
 ### Introducing Flutter Liveness Detection Randomized Plugin! 

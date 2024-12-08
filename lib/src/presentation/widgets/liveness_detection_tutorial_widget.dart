@@ -61,42 +61,42 @@ class _LivenessDetectionTutorialScreenState
                     leading: Text(
                       '1',
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                         "Make sure you are in an area that has sufficient lighting and that your ears are not covered by anything"),
                     title: Text(
                       "Sufficient Lighting",
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                   ListTile(
                     leading: Text(
                       '2',
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                         "Hold the phone at eye level and look straight at the camera"),
                     title: Text(
                       "Straight Ahead View",
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                   ListTile(
                     leading: Text(
                       '3',
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                         "The time limit given for the liveness detection system verification process is 45 seconds"),
                     title: Text(
                       "Time Limit Verification",
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   )
                 ],
@@ -128,7 +128,7 @@ class _LivenessDetectionTutorialScreenState
                   width: 10,
                 ),
                 Text(
-                  'Package Version: 1.0.0',
+                  'Package Version: 1.0.1',
                   style: TextStyle(color: Colors.grey),
                 )
               ],
