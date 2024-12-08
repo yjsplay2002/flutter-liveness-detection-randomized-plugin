@@ -24,7 +24,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_liveness_detection_randomized_plugin: ^1.0.1
+  flutter_liveness_detection_randomized_plugin: ^1.0.2
 ```
 
 ## Platform Setup
