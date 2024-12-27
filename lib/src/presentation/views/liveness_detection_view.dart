@@ -85,7 +85,6 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
   }
 
   void _preInitCallBack() {
-  
     _isInfoStepCompleted = !widget.config.startWithInfoScreen;
   }
 
@@ -179,21 +178,22 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
       } else {
         setState(() => _faceDetectedState = true);
 
-        if (_isProcessingStep &&
-            stepLiveness[_stepsKey.currentState?.currentIndex ?? 0].step ==
-                LivenessDetectionStep.blink) {
-          if (_didCloseEyes) {
-            if ((faces.first.leftEyeOpenProbability ?? 1.0) < 0.75 &&
-                (faces.first.rightEyeOpenProbability ?? 1.0) < 0.75) {
-              await _completeStep(
-                  step: stepLiveness[_stepsKey.currentState?.currentIndex ?? 0].step);
+        final currentIndex = _stepsKey.currentState?.currentIndex ?? 0;
+        if (currentIndex < stepLiveness.length) {
+          if (_isProcessingStep &&
+              stepLiveness[currentIndex].step == LivenessDetectionStep.blink) {
+            if (_didCloseEyes) {
+              if ((faces.first.leftEyeOpenProbability ?? 1.0) < 0.75 &&
+                  (faces.first.rightEyeOpenProbability ?? 1.0) < 0.75) {
+                await _completeStep(step: stepLiveness[currentIndex].step);
+              }
             }
           }
+          _detectFace(
+            face: faces.first,
+            step: stepLiveness[currentIndex].step,
+          );
         }
-        _detectFace(
-          face: faces.first,
-          step: stepLiveness[_stepsKey.currentState?.currentIndex ?? 0].step,
-        );
       }
     } else {
       _resetSteps();
@@ -254,7 +254,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         _startLiveFeed();
         return;
       }
-
+      debugPrint('Image path: ${clickedImage.path}');
       _onDetectionCompleted(imgToReturn: clickedImage);
     } catch (e) {
       _startLiveFeed();
@@ -437,7 +437,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         as LivenessThresholdSmile?;
 
     if ((face.smilingProbability ?? 0) >
-        (smileThreshold?.probability ?? 0.75)) {
+        (smileThreshold?.probability ?? 0.65)) {
       _startProcessing();
       await _completeStep(step: step);
     }
