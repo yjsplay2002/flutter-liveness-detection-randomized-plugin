@@ -1,3 +1,8 @@
+## 1.0.3 🚀
+
+- 🛠️ Adjust to compatible camera dependency to prevent face not found
+- 🔐 Ajdust threshold for smile and look down challenge
+
 ## 1.0.2 🚀
 
 ### Update README.md

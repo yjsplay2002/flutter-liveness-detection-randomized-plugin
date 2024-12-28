@@ -421,7 +421,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
             .firstWhereOrNull((p0) => p0 is LivenessThresholdHead)
         as LivenessThresholdHead?;
     if ((face.headEulerAngleX ?? 0) <
-        (headTurnThreshold?.rotationAngle ?? -20)) {
+        (headTurnThreshold?.rotationAngle ?? -15)) {
       _startProcessing();
       await _completeStep(step: step);
     }
