@@ -10,11 +10,13 @@ class LivenessDetectionView extends StatefulWidget {
   final LivenessDetectionConfig config;
   final bool isEnableSnackBar;
   final bool shuffleListWithSmileLast;
+  final bool showCurrentStep;
 
   const LivenessDetectionView({
     super.key,
     required this.config,
     required this.isEnableSnackBar,
+    this.showCurrentStep = false,
     this.shuffleListWithSmileLast = true,
   });
 
@@ -332,6 +334,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
           camera: CameraPreview(_cameraController!),
           key: _stepsKey,
           steps: stepLiveness,
+          showCurrentStep: widget.showCurrentStep,
           onCompleted: () => Future.delayed(
             const Duration(milliseconds: 500),
             () => _takePicture(),

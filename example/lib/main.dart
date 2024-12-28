@@ -62,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
                 final String? response =
                     await FlutterLivenessDetectionRandomizedPlugin.instance
                         .livenessDetection(
+                  showCurrentStep: false,
                   context: context,
                   shuffleListWithSmileLast: false,
                   isEnableSnackBar: true,

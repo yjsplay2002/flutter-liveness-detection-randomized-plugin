@@ -15,6 +15,7 @@ class FlutterLivenessDetectionRandomizedPlugin {
     required LivenessDetectionConfig config,
     required bool isEnableSnackBar,
     required bool shuffleListWithSmileLast,
+    required bool showCurrentStep,
   }) async {
     final String? capturedFacePath = await Navigator.of(context).push(
       MaterialPageRoute(
@@ -22,6 +23,7 @@ class FlutterLivenessDetectionRandomizedPlugin {
           config: config,
           isEnableSnackBar: isEnableSnackBar,
           shuffleListWithSmileLast: shuffleListWithSmileLast,
+          showCurrentStep: showCurrentStep,
         ),
       ),
     );
