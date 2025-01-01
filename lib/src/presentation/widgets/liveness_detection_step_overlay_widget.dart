@@ -9,6 +9,7 @@ class LivenessDetectionStepOverlayWidget extends StatefulWidget {
   final Widget camera;
   final bool isFaceDetected;
   final bool showCurrentStep;
+  final bool isDarkMode;
 
   const LivenessDetectionStepOverlayWidget({
     super.key,
@@ -17,6 +18,7 @@ class LivenessDetectionStepOverlayWidget extends StatefulWidget {
     required this.camera,
     required this.isFaceDetected,
     this.showCurrentStep = false,
+    this.isDarkMode = true,
   });
 
   @override
@@ -134,17 +136,26 @@ class LivenessDetectionStepOverlayWidgetState
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Back',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: widget.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black),
                         ),
                         Text(
                           stepCounter,
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: widget.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black),
                         )
                       ],
                     )
-                  : const Text('Back', style: TextStyle(color: Colors.white)),
+                  : Text('Back',
+                      style: TextStyle(
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black)),
             ),
             _buildBody(),
           ],
@@ -165,7 +176,7 @@ class LivenessDetectionStepOverlayWidgetState
         const SizedBox(height: 16),
         _buildStepPageView(),
         const SizedBox(height: 16),
-        _buildLoader(),
+        widget.isDarkMode ? _buildLoaderDarkMode() : _buildLoaderLightMode(),
       ],
     );
   }
@@ -186,18 +197,31 @@ class LivenessDetectionStepOverlayWidgetState
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          child: LottieBuilder.asset(
-            widget.isFaceDetected
-                ? 'packages/flutter_liveness_detection_randomized_plugin/src/core/assets/face-detected.json'
-                : 'packages/flutter_liveness_detection_randomized_plugin/src/core/assets/face-id-anim.json',
-            height: widget.isFaceDetected ? 32 : 22,
-            width: widget.isFaceDetected ? 32 : 22,
-          ),
+          child: widget.isDarkMode
+              ? LottieBuilder.asset(
+                  widget.isFaceDetected
+                      ? 'packages/flutter_liveness_detection_randomized_plugin/src/core/assets/face-detected.json'
+                      : 'packages/flutter_liveness_detection_randomized_plugin/src/core/assets/face-id-anim.json',
+                  height: widget.isFaceDetected ? 32 : 22,
+                  width: widget.isFaceDetected ? 32 : 22,
+                )
+              : ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                      widget.isFaceDetected ? Colors.green : Colors.black,
+                      BlendMode.modulate),
+                  child: LottieBuilder.asset(
+                    widget.isFaceDetected
+                        ? 'packages/flutter_liveness_detection_randomized_plugin/src/core/assets/face-detected.json'
+                        : 'packages/flutter_liveness_detection_randomized_plugin/src/core/assets/face-id-anim.json',
+                    height: widget.isFaceDetected ? 32 : 22,
+                    width: widget.isFaceDetected ? 32 : 22,
+                  )),
         ),
         const SizedBox(width: 16),
         Text(
           widget.isFaceDetected ? 'User Face Found' : 'User Face Not Found...',
-          style: const TextStyle(color: Colors.white),
+          style:
+              TextStyle(color: widget.isDarkMode ? Colors.white : Colors.black),
         ),
       ],
     );
@@ -223,15 +247,8 @@ class LivenessDetectionStepOverlayWidgetState
       padding: const EdgeInsets.all(10),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: widget.isDarkMode ? Colors.black : Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 5,
-              spreadRadius: 2.5,
-              color: Colors.black12,
-            ),
-          ],
         ),
         alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -239,8 +256,8 @@ class LivenessDetectionStepOverlayWidgetState
         child: Text(
           widget.steps[index].title,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: widget.isDarkMode ? Colors.white : Colors.black,
             fontSize: 24,
             fontWeight: FontWeight.w500,
           ),
@@ -249,10 +266,18 @@ class LivenessDetectionStepOverlayWidgetState
     );
   }
 
-  Widget _buildLoader() {
+  Widget _buildLoaderDarkMode() {
     return Center(
       child: CupertinoActivityIndicator(
         color: !_isLoading ? Colors.transparent : Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildLoaderLightMode() {
+    return Center(
+      child: CupertinoActivityIndicator(
+        color: _isLoading ? Colors.transparent : Colors.white,
       ),
     );
   }
