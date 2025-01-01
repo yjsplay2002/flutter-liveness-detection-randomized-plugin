@@ -10,11 +10,15 @@ class LivenessDetectionView extends StatefulWidget {
   final LivenessDetectionConfig config;
   final bool isEnableSnackBar;
   final bool shuffleListWithSmileLast;
+  final bool showCurrentStep;
+  final bool isDarkMode;
 
   const LivenessDetectionView({
     super.key,
     required this.config,
     required this.isEnableSnackBar,
+    this.isDarkMode = true,
+    this.showCurrentStep = false,
     this.shuffleListWithSmileLast = true,
   });
 
@@ -33,7 +37,6 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
   // Detection state variables
   late bool _isInfoStepCompleted;
   bool _isProcessingStep = false;
-  bool _didCloseEyes = false;
   bool _faceDetectedState = false;
 
   // Steps related variables
@@ -85,7 +88,6 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
   }
 
   void _preInitCallBack() {
-  
     _isInfoStepCompleted = !widget.config.startWithInfoScreen;
   }
 
@@ -179,21 +181,13 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
       } else {
         setState(() => _faceDetectedState = true);
 
-        if (_isProcessingStep &&
-            stepLiveness[_stepsKey.currentState?.currentIndex ?? 0].step ==
-                LivenessDetectionStep.blink) {
-          if (_didCloseEyes) {
-            if ((faces.first.leftEyeOpenProbability ?? 1.0) < 0.75 &&
-                (faces.first.rightEyeOpenProbability ?? 1.0) < 0.75) {
-              await _completeStep(
-                  step: stepLiveness[_stepsKey.currentState?.currentIndex ?? 0].step);
-            }
-          }
+        final currentIndex = _stepsKey.currentState?.currentIndex ?? 0;
+        if (currentIndex < stepLiveness.length) {
+          _detectFace(
+            face: faces.first,
+            step: stepLiveness[currentIndex].step,
+          );
         }
-        _detectFace(
-          face: faces.first,
-          step: stepLiveness[_stepsKey.currentState?.currentIndex ?? 0].step,
-        );
       }
     } else {
       _resetSteps();
@@ -209,9 +203,11 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
   }) async {
     if (_isProcessingStep) return;
 
+    debugPrint('Current Step: $step');
+
     switch (step) {
       case LivenessDetectionStep.blink:
-        await _handlingBlinkStep(face: face);
+        await _handlingBlinkStep(face: face, step: step);
         break;
 
       case LivenessDetectionStep.lookRight:
@@ -254,7 +250,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         _startLiveFeed();
         return;
       }
-
+      debugPrint('Image path: ${clickedImage.path}');
       _onDetectionCompleted(imgToReturn: clickedImage);
     } catch (e) {
       _startLiveFeed();
@@ -279,7 +275,6 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
       final index = stepLiveness.indexWhere((p1) => p1.step == step.step);
       stepLiveness[index] = stepLiveness[index].copyWith();
     }
-    _didCloseEyes = false;
     if (_stepsKey.currentState?.currentIndex != 0) {
       _stepsKey.currentState?.reset();
     }
@@ -299,7 +294,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
       body: _buildBody(),
     );
   }
@@ -310,6 +305,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         _isInfoStepCompleted
             ? _buildDetectionBody()
             : LivenessDetectionTutorialScreen(
+               isDarkMode: widget.isDarkMode,
                 onStartTap: () {
                   if (mounted) setState(() => _isInfoStepCompleted = true);
                   _startLiveFeed();
@@ -334,13 +330,15 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.black,
+          color: widget.isDarkMode ? Colors.black : Colors.white,
         ),
         LivenessDetectionStepOverlayWidget(
+          isDarkMode: widget.isDarkMode,
           isFaceDetected: _faceDetectedState,
           camera: CameraPreview(_cameraController!),
           key: _stepsKey,
           steps: stepLiveness,
+          showCurrentStep: widget.showCurrentStep,
           onCompleted: () => Future.delayed(
             const Duration(milliseconds: 500),
             () => _takePicture(),
@@ -352,6 +350,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
 
   Future<void> _handlingBlinkStep({
     required Face face,
+    required LivenessDetectionStep step,
   }) async {
     final blinkThreshold = FlutterLivenessDetectionRandomizedPlugin
             .instance.thresholdConfig
@@ -363,7 +362,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         (face.rightEyeOpenProbability ?? 1.0) <
             (blinkThreshold?.rightEyeProbability ?? 0.25)) {
       _startProcessing();
-      if (mounted) setState(() => _didCloseEyes = true);
+      await _completeStep(step: step);
     }
   }
 
@@ -421,7 +420,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
             .firstWhereOrNull((p0) => p0 is LivenessThresholdHead)
         as LivenessThresholdHead?;
     if ((face.headEulerAngleX ?? 0) <
-        (headTurnThreshold?.rotationAngle ?? -20)) {
+        (headTurnThreshold?.rotationAngle ?? -15)) {
       _startProcessing();
       await _completeStep(step: step);
     }
@@ -437,7 +436,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         as LivenessThresholdSmile?;
 
     if ((face.smilingProbability ?? 0) >
-        (smileThreshold?.probability ?? 0.75)) {
+        (smileThreshold?.probability ?? 0.65)) {
       _startProcessing();
       await _completeStep(step: step);
     }
