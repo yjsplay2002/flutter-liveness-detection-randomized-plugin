@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/f7266dc9-c4a2-4fba-8684-0ead2f678180
 - 📱 Real-time face detection
 - 🎲 Randomized challenge sequence generation
 - 💫 Cross-platform support (iOS & Android) 
-- 🎨 Customizable UI components
+- 🎨 Light and dark mode support
 - ✅ High accuracy liveness verification
 - 🚀 Simple integration API
 
@@ -36,7 +36,7 @@ Add camera permission to your AndroidManifest.xml:
 ```
 <uses-permission android:name="android.permission.CAMERA"/>
 ```
-Minimum SDK version: 21
+Minimum SDK version: 23
 
 ### iOS
 Add camera usage description to Info.plist:

@@ -3,6 +3,7 @@
 - 🛠️ Adjust to compatible camera dependency to prevent face not found
 - 🔐 Ajdust threshold for smile and look down challenge
 - 🎨 Add showCurrentStep parameter (default : false)
+- 🎨 Add Light and Dark mode
 
 ## 1.0.2 🚀
 

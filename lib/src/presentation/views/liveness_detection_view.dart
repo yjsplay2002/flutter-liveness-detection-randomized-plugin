@@ -11,11 +11,13 @@ class LivenessDetectionView extends StatefulWidget {
   final bool isEnableSnackBar;
   final bool shuffleListWithSmileLast;
   final bool showCurrentStep;
+  final bool isDarkMode;
 
   const LivenessDetectionView({
     super.key,
     required this.config,
     required this.isEnableSnackBar,
+    this.isDarkMode = true,
     this.showCurrentStep = false,
     this.shuffleListWithSmileLast = true,
   });
@@ -292,7 +294,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
       body: _buildBody(),
     );
   }
@@ -303,6 +305,7 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         _isInfoStepCompleted
             ? _buildDetectionBody()
             : LivenessDetectionTutorialScreen(
+               isDarkMode: widget.isDarkMode,
                 onStartTap: () {
                   if (mounted) setState(() => _isInfoStepCompleted = true);
                   _startLiveFeed();
@@ -327,9 +330,10 @@ class _LivenessDetectionScreenState extends State<LivenessDetectionView> {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.black,
+          color: widget.isDarkMode ? Colors.black : Colors.white,
         ),
         LivenessDetectionStepOverlayWidget(
+          isDarkMode: widget.isDarkMode,
           isFaceDetected: _faceDetectedState,
           camera: CameraPreview(_cameraController!),
           key: _stepsKey,

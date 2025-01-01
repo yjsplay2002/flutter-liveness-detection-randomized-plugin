@@ -2,7 +2,9 @@ import 'package:flutter_liveness_detection_randomized_plugin/index.dart';
 
 class LivenessDetectionTutorialScreen extends StatefulWidget {
   final VoidCallback onStartTap;
-  const LivenessDetectionTutorialScreen({super.key, required this.onStartTap});
+  final bool isDarkMode;
+  const LivenessDetectionTutorialScreen(
+      {super.key, required this.onStartTap, this.isDarkMode = false});
 
   @override
   State<LivenessDetectionTutorialScreen> createState() =>
@@ -19,7 +21,7 @@ class _LivenessDetectionTutorialScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
       body: SafeArea(
         minimum: const EdgeInsets.all(12),
         child: Column(
@@ -30,11 +32,12 @@ class _LivenessDetectionTutorialScreenState
             const SizedBox(
               height: 16,
             ),
-            const Text(
+            Text(
               'Liveness Detection - Tutorial',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
+                color: widget.isDarkMode ? Colors.white : Colors.black,
               ),
             ),
             const SizedBox(
@@ -45,58 +48,90 @@ class _LivenessDetectionTutorialScreenState
               padding: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
+                color: widget.isDarkMode ? Colors.black87 : Colors.white,
+                boxShadow: !widget.isDarkMode
+                    ? [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ]
+                    : null,
               ),
-              child: const Column(
+              child: Column(
                 children: [
                   ListTile(
                     leading: Text(
                       '1',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
                     ),
                     subtitle: Text(
-                        "Make sure you are in an area that has sufficient lighting and that your ears are not covered by anything"),
+                      "Make sure you are in an area that has sufficient lighting and that your ears are not covered by anything",
+                      style: TextStyle(
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
+                    ),
                     title: Text(
                       "Sufficient Lighting",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
                     ),
                   ),
                   ListTile(
                     leading: Text(
                       '2',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
                     ),
                     subtitle: Text(
-                        "Hold the phone at eye level and look straight at the camera"),
+                      "Hold the phone at eye level and look straight at the camera",
+                      style: TextStyle(
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
+                    ),
                     title: Text(
                       "Straight Ahead View",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
                     ),
                   ),
                   ListTile(
                     leading: Text(
                       '3',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
                     ),
                     subtitle: Text(
-                        "The time limit given for the liveness detection system verification process is 45 seconds"),
+                      "The time limit given for the liveness detection system verification process is 45 seconds",
+                      style: TextStyle(
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
+                    ),
                     title: Text(
                       "Time Limit Verification",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black),
                     ),
                   )
                 ],
@@ -106,6 +141,15 @@ class _LivenessDetectionTutorialScreenState
               height: 24,
             ),
             ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    widget.isDarkMode ? Colors.black87 : Colors.white,
+                foregroundColor:
+                    widget.isDarkMode ? Colors.white : Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               icon: const Icon(Icons.camera_alt_outlined),
               onPressed: () => widget.onStartTap(),
               label: const Text(
