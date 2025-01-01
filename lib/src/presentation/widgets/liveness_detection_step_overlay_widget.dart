@@ -8,6 +8,7 @@ class LivenessDetectionStepOverlayWidget extends StatefulWidget {
   final VoidCallback onCompleted;
   final Widget camera;
   final bool isFaceDetected;
+  final bool showCurrentStep;
 
   const LivenessDetectionStepOverlayWidget({
     super.key,
@@ -15,6 +16,7 @@ class LivenessDetectionStepOverlayWidget extends StatefulWidget {
     required this.onCompleted,
     required this.camera,
     required this.isFaceDetected,
+    this.showCurrentStep = false,
   });
 
   @override
@@ -36,10 +38,13 @@ class LivenessDetectionStepOverlayWidgetState
   static const double _stepIncrement = 16.67;
   static const double _heightLine = 25;
 
+  String get stepCounter => "$_currentIndex/${widget.steps.length}";
+
   @override
   void initState() {
     super.initState();
     _initializeControllers();
+    print('showCurrentStep ${widget.showCurrentStep}');
   }
 
   void _initializeControllers() {
@@ -125,7 +130,21 @@ class LivenessDetectionStepOverlayWidgetState
           children: [
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: const Text('Back', style: TextStyle(color: Colors.white)),
+              child: widget.showCurrentStep
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Back',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          stepCounter,
+                          style: const TextStyle(color: Colors.white),
+                        )
+                      ],
+                    )
+                  : const Text('Back', style: TextStyle(color: Colors.white)),
             ),
             _buildBody(),
           ],
